@@ -1,39 +1,19 @@
 ## ofxDatGui
 
-**ofxDatGui** is a **simple to use**, fully customizable, high-resolution graphical user interface for [openFrameworks](http://openframeworks.cc/) inspired by the popular JavaScript [datgui](http://workshop.chromeexperiments.com/examples/gui/) interface.  
+Now it's possibile to load and save data from json using [ofxJsonSettings custom branch](https://github.com/mauro-ferrario/ofxJsonSettings).
 
-![ofxDatGui](http://braitsch.github.io/ofxDatGui/img/ofxdatgui_.png "ofxDatGui")
+// Load settings
+gui->loadSettings("data.json");
 
-## Features
+or, when you have multiple gui you can load the "data.json" the first time and just loadSettings from the same file for the other gui:
 
-**ofxDatGui** offers the following features & components:
+gui1->loadSettings("data.json"); // First load the "global" data for all the guys and use for the gui1
+gui2->loadSettings(); // than use the data just loaded also for gui2
 
-* Click & Toggle (On/Off) Buttons
-* Text Input Fields
-* Color Pickers
-* Range Sliders
-* Dropdown Menus
-* Scroll Views
-* Button Matrices
-* Coordinate Pads
-* Value Plotters
-* Waveform Monitors
-* Framerate Monitor
-* Variable Binding
-* Completely Customizable
-* Folders to group components together
-* An optional header & footer that allow you to title the gui, collapse and drag it around
 
-## Documentation
+// Save settings
+gui->saveSettings("data.json");
 
-[The latest **ofxDatGui** docs are located here](http://braitsch.github.io/ofxDatGui/)
+or
 
-## ofParameter Support
-
-**ofParameter** support is the single most requested feature and is currently in development. Therefore, **I am not accepting ofParameter related pull requests until the first stable version of ofxDatGui with ofParameter support is released.**
-
-## Questions & Feedback
-
-Questions, feedback, feature requests and ideas for improvement are all very much welcome. Please [open an issue](https://github.com/braitsch/ofxDatGui/issues) or join the conversation on this [openFrameworks thread](https://forum.openframeworks.cc/t/ofxdatgui-a-new-user-interface-for-of/20553) before sending me an email.
-
-If you're enjoying ofxDatGui please star the repository or consider making a small donation to help support its ongoing development. If you've made something with it that you'd like to share [please let me know](https://twitter.com/braitsch) and I'll add it to the [gallery.](http://braitsch.github.io/ofxDatGui/gallery.html)
+gui->saveSettings(); // Save sata using the name of the last loaded json
