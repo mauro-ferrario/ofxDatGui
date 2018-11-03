@@ -101,6 +101,7 @@ class ofxDatGui : public ofxDatGuiInteractiveObject
         void loadSettings(string settingFile);
         void loadSettings();
         void saveSettings(string settingFile = "");
+        string getName();
     
     private:
     

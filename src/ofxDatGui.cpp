@@ -1048,3 +1048,7 @@ string ofxDatGui::getNameWithoutSpaces(string originalString){
   return tempString;
 }
 
+string ofxDatGui::getName(){
+  return name;
+}
+
