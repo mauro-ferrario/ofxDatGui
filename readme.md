@@ -1,6 +1,6 @@
 ## ofxDatGui
 
-Now it's possibile to load and save data from json using [ofxJsonSettings custom branch](https://github.com/mauro-ferrario/ofxJsonSettings).
+Now it's possibile to load and save data from json using [ofxJsonSettings custom fork](https://github.com/mauro-ferrario/ofxJsonSettings).
 
 // Load settings
 
