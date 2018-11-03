@@ -25,17 +25,17 @@
 ofxDatGui* ofxDatGui::mActiveGui;
 vector<ofxDatGui*> ofxDatGui::mGuis;
 
-ofxDatGui::ofxDatGui(int x, int y)
+ofxDatGui::ofxDatGui(int x, int y, string name)
 {
     mPosition.x = x;
     mPosition.y = y;
     mAnchor = ofxDatGuiAnchor::NO_ANCHOR;
-    init();
+    init(name);
 }
 
-ofxDatGui::ofxDatGui(ofxDatGuiAnchor anchor)
+ofxDatGui::ofxDatGui(ofxDatGuiAnchor anchor, string name)
 {
-    init();
+    init(name);
     mAnchor = anchor;
     anchorGui();
 }
@@ -50,8 +50,9 @@ ofxDatGui::~ofxDatGui()
     ofRemoveListener(ofEvents().windowResized, this, &ofxDatGui::onWindowResized, OF_EVENT_ORDER_BEFORE_APP);
 }
 
-void ofxDatGui::init()
+void ofxDatGui::init(string _name)
 {
+    name    = _name;
     mMoving = false;
     mVisible = true;
     mEnabled = true;
@@ -934,4 +935,116 @@ void ofxDatGui::onWindowResized(ofResizeEventArgs &e)
     if (mAnchor != ofxDatGuiAnchor::NO_ANCHOR) anchorGui();
 }
 
+void ofxDatGui::loadSettings(string settingFile){
+  Settings::get().load(settingFile);
+  loadSettings();
+}
+
+void ofxDatGui::loadSettings(){
+  string path = this->name;
+  loadItemsSettings(items, path);
+}
+
+void ofxDatGui::loadItemsSettings(vector<ofxDatGuiComponent*> items, string rootPath){
+  for (std::vector<ofxDatGuiComponent*>::iterator it = items.begin() ; it != items.end(); ++it){
+    switch((*it)->getType()){
+      case ofxDatGuiType::SLIDER:
+        loadSliderSetting(dynamic_cast<ofxDatGuiSlider *>(*it), rootPath);
+        break;
+      case ofxDatGuiType::TOGGLE:
+        loadToggleSetting(dynamic_cast<ofxDatGuiToggle *>(*it), rootPath);
+        break;
+      case ofxDatGuiType::COLOR_PICKER:
+        loadColorPickerSetting(dynamic_cast<ofxDatGuiColorPicker *>(*it), rootPath);
+        break;
+      case ofxDatGuiType::FOLDER:
+        ofxDatGuiFolder* folder = dynamic_cast<ofxDatGuiFolder *>(*it);
+        loadItemsSettings(folder->children, rootPath + "/" + folder->getName());
+        break;
+    }
+  }
+}
+
+void ofxDatGui::saveSettings(string settingFile){
+  string path = this->name;
+  saveItemsSettings(items, path);
+  string settingFilePath = Settings::getLastSavedPath();
+  if(settingFile != ""){
+    settingFilePath = settingFile;
+  }
+  Settings::get().save(settingFilePath);
+}
+
+void ofxDatGui::saveItemsSettings(vector<ofxDatGuiComponent*> items, string rootPath){
+  for (std::vector<ofxDatGuiComponent*>::iterator it = items.begin() ; it != items.end(); ++it){
+    switch((*it)->getType()){
+      case ofxDatGuiType::SLIDER:
+        saveSliderSetting(dynamic_cast<ofxDatGuiSlider *>(*it), rootPath);
+        break;
+      case ofxDatGuiType::TOGGLE:
+        saveToggleSetting(dynamic_cast<ofxDatGuiToggle *>(*it), rootPath);
+        break;
+      case ofxDatGuiType::COLOR_PICKER:
+        saveColorPickerSetting(dynamic_cast<ofxDatGuiColorPicker *>(*it), rootPath);
+        break;
+      case ofxDatGuiType::FOLDER:
+        ofxDatGuiFolder* folder = dynamic_cast<ofxDatGuiFolder *>(*it);
+        saveItemsSettings(folder->children, rootPath + "/" + folder->getName());
+        break;
+    }
+  }
+}
+
+void ofxDatGui::loadSliderSetting(ofxDatGuiSlider* slider, string rootPath){
+  string pathWithoutSpace = getCompleteSettingPath(rootPath, slider->getName());
+  slider->setValue(Settings::getFloat(pathWithoutSpace));
+  slider = NULL;
+}
+
+void ofxDatGui::saveSliderSetting(ofxDatGuiSlider* slider, string rootPath){
+  string pathWithoutSpace = getCompleteSettingPath(rootPath, slider->getName());
+  Settings::getFloat(pathWithoutSpace) = slider->getValue();
+  slider = NULL;
+}
+
+void ofxDatGui::loadColorPickerSetting(ofxDatGuiColorPicker* colorPicker, string rootPath){
+  string pathWithoutSpace = getCompleteSettingPath(rootPath, colorPicker->getName());
+  colorPicker->setColor(Settings::getColor(pathWithoutSpace));
+  colorPicker = NULL;
+}
+
+void ofxDatGui::saveColorPickerSetting(ofxDatGuiColorPicker* colorPicker, string rootPath){
+  string pathWithoutSpace = getCompleteSettingPath(rootPath, colorPicker->getName());
+  Settings::getColor(pathWithoutSpace) = colorPicker->getColor();
+  colorPicker = NULL;
+}
+
+void ofxDatGui::loadToggleSetting(ofxDatGuiToggle* toggle, string rootPath){
+  string pathWithoutSpace = getCompleteSettingPath(rootPath, toggle->getName());
+  toggle->setChecked(Settings::getBool(pathWithoutSpace));
+  toggle = NULL;
+}
+
+void ofxDatGui::saveToggleSetting(ofxDatGuiToggle* toggle, string rootPath){
+  string pathWithoutSpace = getCompleteSettingPath(rootPath, toggle->getName());
+  Settings::getBool(pathWithoutSpace) = toggle->getChecked();
+  toggle = NULL;
+}
+
+
+string ofxDatGui::getCompleteSettingPath(string rootPath, string componentName){
+  string path = rootPath;
+  if(path != ""){
+    path += "/";
+  }
+  path += componentName;
+  return getNameWithoutSpaces(path);
+}
+
+string ofxDatGui::getNameWithoutSpaces(string originalString){
+  string tempString = originalString;
+  std::transform(tempString.begin(), tempString.end(), tempString.begin(), ::tolower);
+  std::replace(tempString.begin(), tempString.end(), ' ', '-');
+  return tempString;
+}
 

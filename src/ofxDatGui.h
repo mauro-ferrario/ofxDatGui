@@ -23,14 +23,15 @@
 #pragma once
 #include "ofxDatGuiGroups.h"
 #include "ofxDatGuiControls.h"
+#include "ofxJsonSettings.h"
 
 class ofxDatGui : public ofxDatGuiInteractiveObject
 {
     
     public:
     
-        ofxDatGui(int x, int y);
-        ofxDatGui(ofxDatGuiAnchor anchor = ofxDatGuiAnchor::TOP_LEFT);
+        ofxDatGui(int x, int y, string name = "");
+        ofxDatGui(ofxDatGuiAnchor anchor = ofxDatGuiAnchor::TOP_LEFT, string name = "");
         ~ofxDatGui();
     
         void draw();
@@ -96,6 +97,10 @@ class ofxDatGui : public ofxDatGuiInteractiveObject
         ofxDatGuiValuePlotter* getValuePlotter(string label, string folder = "");
         ofxDatGuiFolder* getFolder(string label);
         ofxDatGuiDropdown* getDropdown(string label);
+  
+        void loadSettings(string settingFile);
+        void loadSettings();
+        void saveSettings(string settingFile = "");
     
     private:
     
@@ -130,7 +135,7 @@ class ofxDatGui : public ofxDatGuiInteractiveObject
         static vector<ofxDatGui*> mGuis;
         static unique_ptr<ofxDatGuiTheme> theme;
     
-        void init();
+        void init(string _name);
         void layoutGui();
         void anchorGui();
         void moveGui(ofPoint pt);
@@ -152,5 +157,17 @@ class ofxDatGui : public ofxDatGuiInteractiveObject
         void on2dPadEventCallback(ofxDatGui2dPadEvent e);
         void onColorPickerEventCallback(ofxDatGuiColorPickerEvent e);
         void onMatrixEventCallback(ofxDatGuiMatrixEvent e);
+  
+        void loadItemsSettings(vector<ofxDatGuiComponent*> items, string rootPath);
+        void saveItemsSettings(vector<ofxDatGuiComponent*> items, string rootPath);
+        void loadSliderSetting(ofxDatGuiSlider* slider, string rootPath);
+        void saveSliderSetting(ofxDatGuiSlider* slider, string rootPath);
+        void loadColorPickerSetting(ofxDatGuiColorPicker* colorPicker, string rootPath);
+        void saveColorPickerSetting(ofxDatGuiColorPicker* colorPicker, string rootPath);
+        void loadToggleSetting(ofxDatGuiToggle* toggle, string rootPath);
+        void saveToggleSetting(ofxDatGuiToggle* toggle, string rootPath);
+        string getCompleteSettingPath(string rootPath, string componentName);
+        string getNameWithoutSpaces(string originalString);
+        string name;
 
 };
