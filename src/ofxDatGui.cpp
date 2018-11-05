@@ -397,6 +397,13 @@ ofxDatGuiMatrix* ofxDatGui::addMatrix(string label, int numButtons, bool showLab
     return matrix;
 }
 
+ofxDatGuiTexture* ofxDatGui::addTexture(string label, ofTexture* _texture)
+{
+  ofxDatGuiTexture* texture = new ofxDatGuiTexture(label, _texture);
+  attachItem(texture);
+  return texture;
+}
+
 ofxDatGuiFolder* ofxDatGui::addFolder(string label, ofColor color)
 {
     ofxDatGuiFolder* folder = new ofxDatGuiFolder(label, color);
@@ -600,6 +607,23 @@ ofxDatGuiMatrix* ofxDatGui::getMatrix(string ml, string fl)
         trash.push_back(o);
     }
     return o;
+}
+
+ofxDatGuiTexture* ofxDatGui::getTexture(string ml, string fl)
+{
+  ofxDatGuiTexture* o = nullptr;
+  if (fl != ""){
+    ofxDatGuiFolder* f = static_cast<ofxDatGuiFolder*>(getComponent(ofxDatGuiType::FOLDER, fl));
+    if (f) o = static_cast<ofxDatGuiTexture*>(f->getComponent(ofxDatGuiType::TEXTURE, ml));
+  }   else{
+    o = static_cast<ofxDatGuiTexture*>(getComponent(ofxDatGuiType::TEXTURE, ml));
+  }
+  if (o==nullptr){
+    o = ofxDatGuiTexture::getInstance();
+    ofxDatGuiLog::write(ofxDatGuiMsg::COMPONENT_NOT_FOUND, fl!="" ? fl+"-"+ml : ml);
+    trash.push_back(o);
+  }
+  return o;
 }
 
 ofxDatGuiDropdown* ofxDatGui::getDropdown(string dl)

@@ -31,6 +31,7 @@
 #include "ofxDatGuiMatrix.h"
 #include "ofxDatGuiTimeGraph.h"
 #include "ofxDatGuiScrollView.h"
+#include "ofxDatGuiTexture.h"
 
 class ofxDatGuiGroup : public ofxDatGuiButton {
 
@@ -367,6 +368,14 @@ class ofxDatGuiFolder : public ofxDatGuiGroup {
             matrix->onMatrixEvent(this, &ofxDatGuiFolder::dispatchMatrixEvent);
             attachItem(matrix);
             return matrix;
+        }
+  
+        ofxDatGuiTexture* addTexture(string label, ofTexture* _texture)
+        {
+          ofxDatGuiTexture* texture = new ofxDatGuiTexture(label, _texture);
+          texture->setStripeColor(mStyle.stripe.color);
+          attachItem(texture);
+          return texture;
         }
     
         ofxDatGuiWaveMonitor* addWaveMonitor(string label, float frequency, float amplitude)

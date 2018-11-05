@@ -82,6 +82,9 @@ class ofxDatGui : public ofxDatGuiInteractiveObject
         ofxDatGuiMatrix* addMatrix(string label, int numButtons, bool showLabels = false);
         ofxDatGuiFolder* addFolder(string label, ofColor color = ofColor::white);
         ofxDatGuiFolder* addFolder(ofxDatGuiFolder* folder);
+  
+  
+        ofxDatGuiTexture* addTexture(string label, ofTexture* texture);
     
         ofxDatGuiHeader* getHeader();
         ofxDatGuiFooter* getFooter();
@@ -97,6 +100,8 @@ class ofxDatGui : public ofxDatGuiInteractiveObject
         ofxDatGuiValuePlotter* getValuePlotter(string label, string folder = "");
         ofxDatGuiFolder* getFolder(string label);
         ofxDatGuiDropdown* getDropdown(string label);
+  
+        ofxDatGuiTexture* getTexture(string label, string folder = "");
   
         void loadSettings(string settingFile);
         void loadSettings();
