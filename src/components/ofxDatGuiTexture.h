@@ -79,8 +79,8 @@ public:
     ofPushStyle();
     mPad.x = x + mLabel.width;
     mPad.y = y + mStyle.padding;
-    mPad.width = mStyle.width - mStyle.padding - mLabel.width;
-    mPad.height = mPad.width / proportion;
+    mPad.width = mStyle.width - (mStyle.padding * 2) - mLabel.width;
+    mPad.height = (mPad.width / proportion) - mStyle.padding;
     ofxDatGuiComponent::draw();
     ofSetColor(mColors.fill);
     ofDrawRectangle(mPad);
