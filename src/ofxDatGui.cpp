@@ -50,6 +50,25 @@ ofxDatGui::~ofxDatGui()
     ofRemoveListener(ofEvents().windowResized, this, &ofxDatGui::onWindowResized, OF_EVENT_ORDER_BEFORE_APP);
 }
 
+void ofxDatGui::deleteItems(){
+  cout << "deleteItems" << endl;
+  for (std::vector<ofxDatGuiComponent*>::iterator it = items.begin() ; it != items.end(); ++it){
+    switch((*it)->getType()){
+      case ofxDatGuiType::FOLDER:
+         ofxDatGuiFolder* folder = dynamic_cast<ofxDatGuiFolder *>(*it);
+       folder->deleteChildren();
+        folder = NULL;
+        break;
+    }
+//    delete (*it);
+//    (*it) = NULL;
+  }
+//  for (auto i:items) {
+//    delete i;
+//  };
+  items.clear();
+}
+
 void ofxDatGui::init(string _name)
 {
     name    = _name;

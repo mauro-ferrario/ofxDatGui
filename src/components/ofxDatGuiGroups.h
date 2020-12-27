@@ -167,7 +167,19 @@ class ofxDatGuiFolder : public ofxDatGuiGroup {
             mType = ofxDatGuiType::FOLDER;
             setTheme(ofxDatGuiComponent::getTheme());
         }
-    
+  
+        void deleteChildren(){
+          cout << "delete children" << endl;
+          int totChildren = children.size();
+          for (int i=0; i<totChildren; i++) {
+            delete children[i];
+            children[i] = NULL;
+            cout << "In" << endl;
+          }
+          children.clear();
+        }
+  
+  
         void setTheme(const ofxDatGuiTheme* theme)
         {
             setComponentStyle(theme);

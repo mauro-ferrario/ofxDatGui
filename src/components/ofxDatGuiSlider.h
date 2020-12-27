@@ -233,6 +233,7 @@ class ofxDatGuiSlider : public ofxDatGuiComponent {
         }
     
         static ofxDatGuiSlider* getInstance() { return new ofxDatGuiSlider("X", 0, 100); }
+  double  mValue;
     
     protected:
     
@@ -310,7 +311,6 @@ class ofxDatGuiSlider : public ofxDatGuiComponent {
     
         float   mMin;
         float   mMax;
-        double  mValue;
         double  mScale;
         int     mPrecision;
         bool    mTruncateValue;

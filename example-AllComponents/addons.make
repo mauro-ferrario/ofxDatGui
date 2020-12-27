@@ -1,1 +1,3 @@
 ofxDatGui
+ofxJSON
+ofxJsonSettings
