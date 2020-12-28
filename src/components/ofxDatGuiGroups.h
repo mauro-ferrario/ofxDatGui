@@ -169,12 +169,10 @@ class ofxDatGuiFolder : public ofxDatGuiGroup {
         }
   
         void deleteChildren(){
-          cout << "delete children" << endl;
           int totChildren = children.size();
           for (int i=0; i<totChildren; i++) {
             delete children[i];
             children[i] = NULL;
-            cout << "In" << endl;
           }
           children.clear();
         }
