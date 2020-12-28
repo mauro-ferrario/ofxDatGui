@@ -51,7 +51,6 @@ ofxDatGui::~ofxDatGui()
 }
 
 void ofxDatGui::deleteItems(){
-  cout << "deleteItems" << endl;
   for (std::vector<ofxDatGuiComponent*>::iterator it = items.begin() ; it != items.end(); ++it){
     switch((*it)->getType()){
       case ofxDatGuiType::FOLDER:
